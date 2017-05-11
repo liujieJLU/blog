@@ -1,0 +1,19 @@
+
+/*==============================================
+    COMMON STYLES    
+    =============================================*/
+.float-left-2 {
+	float :left;
+	width :50%;
+	padding-right: 5%
+}
+
+.float-right-2 {
+	float :right;
+	width :50%;
+	padding-left: 5%
+}
+
+.btn-form-span-1 {
+	padding-right:10px; 
+}
