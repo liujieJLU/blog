@@ -71,7 +71,7 @@ String js = (String)this.getServletContext().getAttribute("token.js");
                                 <a href="<%=basePath%>jsp/admin/main.jsp"><i class="fa fa-edit"></i>新建博文</a>
                             </li>
                             <li>
-                                <a class="active-menu" href="<%=basePath%>admin/tags"><i class="fa fa-edit"></i>标签管理</a>
+                                <a class="active-menu" href="<%=basePath%>jsp/admin/tag.jsp"><i class="fa fa-edit"></i>标签管理</a>
                             </li>
                         </ul>
                     </li>
@@ -200,21 +200,19 @@ String js = (String)this.getServletContext().getAttribute("token.js");
                 </div>
                 <!-- /. ROW  -->
                 <div class="row">
-<div class="col-md-8 col-sm-6 col-xs-12">
+		<div class="col-md-8 col-sm-6 col-xs-12">
             <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="collapsed">新建标签</a>
+                            <a id="addTag" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="collapsed">新建标签</a>
                         </h4>
                     </div>
-                	<%--  <form action="<%=basePath%>admin/tags/addTag" method="post">  --%>
                     <div class="panel-body">
                     <div id="collapseOne" class="panel-collapse collapse">
                         <div class="alert alert-info text-center">
                           <h4> 输入新的标签名</h4> 
                           <hr>
                           <input class="form-control" type="text" id="tagName" name="tags.name">
-                          <!-- <input type="text"  name="tags.name" required lay-verify="required" placeholder="必填内容" autocomplete="off" class="layui-input"> -->
                           <hr>
                             <button class="btn btn-info" onclick="addTag()">确定</button>
                         </div>
@@ -237,10 +235,9 @@ String js = (String)this.getServletContext().getAttribute("token.js");
                       </tr>
                     </thead>
                     <tbody id="tbTags">
+                    <tr class="list-group-item-danger">
                     
-                      
-                     
-                      <tr class="list-group-item-danger">
+                    
                         <td><input type="checkbox" value="" /></td>
                         <td>全选</td>
                         <td>90 Orders To Process</td>
@@ -249,6 +246,7 @@ String js = (String)this.getServletContext().getAttribute("token.js");
                       </tr>
                     </tbody>
                   </table>
+	<div id="pageTag"></div>
                 </div>
 
                  </div>
@@ -279,6 +277,7 @@ String js = (String)this.getServletContext().getAttribute("token.js");
 		    	success: function(data){
 		    		if(data.code == 0){
 		    			layer.msg("添加成功！");
+		    			setTimeout("window.location.href ='<%=basePath%>jsp/admin/tag.jsp'", 2000);
 		    		}else{
 		    			layer.msg("添加失败！"+data.message);
 		    		}
@@ -288,31 +287,34 @@ String js = (String)this.getServletContext().getAttribute("token.js");
 	}
 	
 	$(function(){
+		showTags("1");
+	});
+	
+	function showTags(page){
 		layui.define(['layer', 'form','laytpl','laypage'], function(){
 			  var layer = layui.layer;
 			  var form = layui.form();
 			  var laytpl = layui.laytpl;
 			  var $ = layui.jquery;
 			  var laypage = layui.laypage;
-			 
-			  
 		$.ajax({
 	    	type:"post",
 	    	url:"<%=basePath%>admin/tags",
-	    	data:"",
+	    	data:{pageNumber:page},
 	    	success: function(element){
 	    		if(element.code == 0){
-	    			console.log("===="+element.data.list);
-	    			console.log("===="+element.data.list.length);
-	    			laytpl($("#tagsTemplate").html()).render(element.data,function(html){
+	    			laytpl($("#tagsTemplate").html()).render(element.data.tagsList,function(html){
 	    				$("#tbTags").html(html);
 	    			});
-	    			 laypage({
+	    			  laypage({
 	    	  			    cont: 'pageTag',
-	    	  			    pages: Math.ceil(data.length/nums), //得到总页数
+	    	  			    pages: Math.ceil(element.data.pageCount/5), //得到总页数 
 	    	  			    groups: '5',
-	    	  			    jump: function(obj){
-	    	  			      document.getElementById('tag_list').innerHTML = render(obj.curr);
+	    	  			    curr: page,
+	    	  			    jump: function(obj, first){
+	    	  			    	if(!first){
+	    	  			    		showTags(obj.curr);
+	    	  			    	}
 	    	  			    }
 	    	  			  });
 	    		}else{
@@ -320,12 +322,9 @@ String js = (String)this.getServletContext().getAttribute("token.js");
 	    		}
 	    	}
 	    });
-
-		
 		});
-	});
-	
-	
+	}
+
 	
 	</script>
 	<script id="tagsTemplate" type="text/template">
@@ -337,10 +336,8 @@ String js = (String)this.getServletContext().getAttribute("token.js");
 		<td class="text-center">{{item.cdate}}</td>
 		<td class="text-center"><span class="btn-form-span-1"><a href="#" class="btn btn-primary"><i class="icon-pencil"></i>修改</a></span><span class="btn-form-span-1"><a href="#" class="btn btn-danger ">删除</a></span></td>
  	 </tr>
-	{{# }); 
-	<div id="pageTag"></div>
-	<ul id="tag_list"></ul> 
-	}}
+	{{# }); }}
+	
 	</script>
 
 

@@ -1,5 +1,7 @@
 package com.blog.model;
 
+import java.util.List;
+
 import com.blog.model.base.BaseTags;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
@@ -17,8 +19,25 @@ public class Tags extends BaseTags<Tags> {
 	 */
 	public static Page<Record> paginate(int pageNumber, int pageSize) {
 		String select = "select * ";
-		String sqlExceptSelect = "from tags";
+		String sqlExceptSelect = "from tags Order By cdate desc";
 		Page<Record> tagsPage = Db.paginate(pageNumber, pageSize, select, sqlExceptSelect);
 		return tagsPage;
+	}
+
+	/*
+	 * 查询标签总数
+	 */
+	public static int pageNumber() {
+		String sql = "select * from tags";
+		List<Record> tagsList = Db.find(sql);
+		return tagsList.size();
+	}
+
+	/*
+	 * 根据标签id删除标签
+	 */
+	public static Boolean delTag(String id) {
+		Boolean bool = Db.deleteById("id", id);
+		return bool;
 	}
 }

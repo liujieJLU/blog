@@ -1,5 +1,7 @@
 package com.blog.controller;
 
+import java.util.HashMap;
+
 import com.blog.common.BaseController;
 import com.blog.common.GlobalConstants;
 import com.blog.model.Tags;
@@ -16,12 +18,19 @@ import com.jfinal.plugin.activerecord.Record;
  */
 public class TagController extends BaseController {
 	public void index() {
-		int pageNumber = Integer.valueOf(getPara("pageNumber"));
+		int pageNumber = 1;
+		if (getPara("pageNumber") != "" && getPara("pageNumber") != null) {
+			pageNumber = Integer.valueOf(getPara("pageNumber"));
+		}
 		int pageSize = 5;
 		Page<Record> tagsList = Tags.paginate(pageNumber, pageSize);
-		System.out.println("查到的tags数量为：" + tagsList.getTotalPage());
+		int pageCount = Tags.pageNumber();
+		System.out.println("当前页码查到的tags数量为：" + tagsList.getTotalPage());
+		HashMap<String, Object> tagsMap = new HashMap<String, Object>();
+		tagsMap.put("tagsList", tagsList);
+		tagsMap.put("pageCount", pageCount);
 		if (tagsList != null) {
-			render(GlobalConstants.Code.SUCCESS, null, tagsList);
+			render(GlobalConstants.Code.SUCCESS, null, tagsMap);
 		}
 	}
 
@@ -29,7 +38,6 @@ public class TagController extends BaseController {
 	 * 增加标签页
 	 */
 	public void addTag() {
-		System.out.println("已经进入");
 		try {
 			Tags tags = getModel(Tags.class, "tags");
 			if (tags.getName() != null) {
@@ -51,6 +59,15 @@ public class TagController extends BaseController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
 
+	/*
+	 * 删除标签
+	 */
+	public void delTag() {
+		String tagId = getPara("pageId");
+		if (tagId != "" && tagId != null) {
+			boolean bool = Tags.delTag(tagId);
+		}
 	}
 }
