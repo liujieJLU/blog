@@ -324,7 +324,18 @@ String js = (String)this.getServletContext().getAttribute("token.js");
 	    });
 		});
 	}
-
+	
+	function layerWindows(){
+		layui.use('layer', function(){
+			  var layer = layui.layer;
+			  
+			  layer.open({
+				  type: 1,
+				  area: ['700px', '300px'],
+				  content: $('#collapseOne') //数组第二项即吸附元素选择器或者DOM
+				}); 
+			});   
+	}
 	
 	</script>
 	<script id="tagsTemplate" type="text/template">
@@ -334,7 +345,14 @@ String js = (String)this.getServletContext().getAttribute("token.js");
 		<td class="text-center">index</td>
    		<td class="text-center">{{item.name}}</td>
 		<td class="text-center">{{item.cdate}}</td>
-		<td class="text-center"><span class="btn-form-span-1"><a href="#" class="btn btn-primary"><i class="icon-pencil"></i>修改</a></span><span class="btn-form-span-1"><a href="#" class="btn btn-danger ">删除</a></span></td>
+		<td class="text-center">
+			<span class="btn-form-span-1">
+				<a href="javaScript:layerWindows();" class="btn btn-primary"><i class="icon-pencil"></i>修改</a>
+			</span>
+			<span class="btn-form-span-1">
+				<a href="<%=basePath%>admin/tags/delTag/{{item.id}}" class="btn btn-danger ">删除</a>
+			</span>
+		</td>
  	 </tr>
 	{{# }); }}
 	

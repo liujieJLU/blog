@@ -37,7 +37,8 @@ public class Tags extends BaseTags<Tags> {
 	 * 根据标签id删除标签
 	 */
 	public static Boolean delTag(String id) {
-		Boolean bool = Db.deleteById("id", id);
+		Db.update("delete from tags where id = ?", id);
+		Boolean bool = Tags.dao.deleteById(id);
 		return bool;
 	}
 }

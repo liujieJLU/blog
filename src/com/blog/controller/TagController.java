@@ -65,9 +65,16 @@ public class TagController extends BaseController {
 	 * 删除标签
 	 */
 	public void delTag() {
-		String tagId = getPara("pageId");
+		String tagId = getPara();
 		if (tagId != "" && tagId != null) {
 			boolean bool = Tags.delTag(tagId);
+			if (bool) {
+				render(GlobalConstants.Code.FAILURE, "删除失败！");
+			} else {
+				render(GlobalConstants.Code.SUCCESS, "删除成功！");
+			}
+		} else {
+			render(GlobalConstants.Code.FAILURE, "删除失败,标签ID丢失！");
 		}
 	}
 }
