@@ -1,30 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%
-String path = request.getContextPath();
-String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-String css = (String)this.getServletContext().getAttribute("token.css");
-String js = (String)this.getServletContext().getAttribute("token.js");
-%>
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>blog admin for backend systems</title>
-     <!-- BOOTSTRAP STYLES-->
-    <link href="<%=basePath%>static/css/common/bootstrap.css?t=<%=css%>" rel="stylesheet" />
-    <link href="<%=basePath%>static/css/common/font-awesome.css?t=<%=css%>" rel="stylesheet" />
-    <link href="<%=basePath%>static/css/common/fonts.css?t=<%=css%>" rel="stylesheet" />
-    <link href="<%=basePath%>static/css/common/summernote.css?t=<%=css%>" rel="stylesheet" />
-    <link href="<%=basePath%>static/css/style/basic.css?t=<%=css%>" rel="stylesheet" />
-    <link href="<%=basePath%>static/css/style/custom.css?t=<%=css%>" rel="stylesheet" />
-    <link href="<%=basePath%>static/css/style/common.css?t=<%=css%>" rel="stylesheet" />
-    <link href="<%=basePath%>static/layui/css/layui.css?t=<%=css%>" rel="stylesheet" />
-    
+<%@ taglib prefix = "c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 
-  </head>
-  
+  <%@ include file ="../main/title.jsp" %>
   <body>
     <div id="wrapper">
         <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
@@ -65,13 +44,13 @@ String js = (String)this.getServletContext().getAttribute("token.js");
 
 
                     <li class="active">
-                        <a  href="index.html"><i class="fa fa-dashboard "></i>博客管理<span class="fa arrow"></span></a>
+                        <a href="index.html"><i class="fa fa-dashboard "></i>博文管理</a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="<%=basePath%>jsp/admin/main.jsp"><i class="fa fa-edit"></i>新建博文</a>
+                                <a class="active-menu" href="<%=basePath%>jsp/admin/main.jsp"><i class="fa fa-edit"></i>新建博文</a>
                             </li>
                             <li>
-                                <a class="active-menu" href="<%=basePath%>jsp/admin/tag.jsp"><i class="fa fa-edit"></i>标签管理</a>
+                                <a href="<%=basePath%>admin/tags"><i class="fa fa-edit"></i>标签管理</a>
                             </li>
                         </ul>
                     </li>
@@ -193,171 +172,85 @@ String js = (String)this.getServletContext().getAttribute("token.js");
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                        <h1 class="page-head-line">标签管理</h1>
-                        <h1 class="page-subhead-line">你可以为你的任意一个博文添加多个标签，在这里可以增加、删除或者修改标签，</h1>
+                        <h1 class="page-head-line">Basic Forms</h1>
+                        <h1 class="page-subhead-line">This is dummy text , you can replace it with your original text. </h1>
 
                     </div>
                 </div>
                 <!-- /. ROW  -->
-                <div class="row">
-		<div class="col-md-8 col-sm-6 col-xs-12">
-            <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a id="addTag" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="collapsed">新建标签</a>
-                        </h4>
-                    </div>
-                    <div class="panel-body">
-                    <div id="collapseOne" class="panel-collapse collapse">
-                        <div class="alert alert-info text-center">
-                          <h4> 输入新的标签名</h4> 
-                          <hr>
-                          <input class="form-control" type="text" id="tagName" name="tags.name">
-                          <hr>
-                            <button class="btn btn-info" onclick="addTag()">确定</button>
+           <div class="row">
+            <div class="col-md-8 col-sm-6 col-xs-12">
+               <div class="panel panel-info">
+                        <div class="panel-heading">
+                           BASIC FORM
                         </div>
-                    </div>
+                        <div class="panel-body">
+                            <form role="form">
+                                        <div class="form-group">
+                                            <label>博文标题</label>
+                                            <input class="form-control" type="text">
+                                            <p class="help-block">Help text here.</p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>博文作者</label>
+                                            <input class="form-control" type="text">
+                                            <p class="help-block">Help text here.</p>
+                                        </div>
+                                            <div  class="float-left-2">
+                                            <label>博文类型</label>
+                                            <select class="form-control">
+                                                <option>One Vale</option>
+                                                <option>Two Vale</option>
+                                                <option>Three Vale</option>
+                                                <option>Four Vale</option>
+                                            </select>
+                                        	</div>
+                                        	<div class="float-right-2">
+                                            <label>博文标签</label>
+                                            <select class="form-control">
+                                            <option value="">请选择标签</option>
+                                            <c:forEach items="${tagsList}" var="tags" varStatus="status">
+                                            	<option value="${tags.id}">${tags.name}</option>
+                                            </c:forEach>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>博文摘要</label>
+                                            <textarea class="form-control" rows="4"></textarea>
+                                       	</div>
+                                       	<div id="summernote" class="form-group">
+                                       		<p>Hello Summernote</p>
+                                       	</div>
+                                        <button type="submit" class="btn btn-info">Send Message </button>
+                                    </form>
+                            </div>
                     </div>
             </div>
-        <div class="panel panel-primary">
-                 <!-- Default panel contents -->
-                    <div class="panel-heading">查看现有标签</div>
 
-                  <!-- Table -->
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th class="text-center">序号</th>
-                        <th class="text-center">标签名</th>
-                        <th class="text-center">创建日期</th>
-                        <th class="text-center">操作</th>
-                      </tr>
-                    </thead>
-                    <tbody id="tbTags">
-                    <tr class="list-group-item-danger">
-                    
-                    
-                        <td><input type="checkbox" value="" /></td>
-                        <td>全选</td>
-                        <td>90 Orders To Process</td>
-                        <td>2nd December </td>
-                        <td><a href="#" class="btn btn-info">In Process</a></td>
-                      </tr>
-                    </tbody>
-                  </table>
-	<div id="pageTag"></div>
-                </div>
-
-                 </div>
-            
+            </div>
+            <!-- /. PAGE INNER  -->
         </div>
-    </div>
+        <!-- /. PAGE WRAPPER  -->
+  	  </div>
     </div>
     <!-- /. WRAPPER  -->
     <div id="footer-sec">
-        &copy; 2014 YourCompany | More Templateques <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a>
+        &copy; 2014 YourCompany | More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a>
     </div>
+    
     <script type="text/javascript" src="<%=basePath%>static/js/jquery.js?=<%=js%>"></script>
     <script type="text/javascript" src="<%=basePath%>static/js/bootstrap.js?=<%=js%>"></script>
     <script type="text/javascript" src="<%=basePath%>static/js/jquery.metisMenu.js?=<%=js%>"></script>
     <script type="text/javascript" src="<%=basePath%>static/js/custom.js?=<%=js%>"></script>
-    <script type="text/javascript" src="<%=basePath%>static/layui/layui.js?=<%=js%>"></script>
-	<script type="text/javascript">
-	
-		 
-	function addTag(){
-		layui.use(['layer', 'form','laytpl'], function(){
-			  var layer = layui.layer;
-			  var form = layui.form();
-		 $.ajax({
-		    	type:"post",
-		    	url:"<%=basePath%>admin/tags/addTag",
-		    	data:{"tags.name":$("#tagName").val()},
-		    	success: function(data){
-		    		if(data.code == 0){
-		    			layer.msg("添加成功！");
-		    			setTimeout("window.location.href ='<%=basePath%>jsp/admin/tag.jsp'", 2000);
-		    		}else{
-		    			layer.msg("添加失败！"+data.message);
-		    		}
-		    	}
-		    });
-		}); 
-	}
-	
-	$(function(){
-		showTags("1");
-	});
-	
-	function showTags(page){
-		layui.define(['layer', 'form','laytpl','laypage'], function(){
-			  var layer = layui.layer;
-			  var form = layui.form();
-			  var laytpl = layui.laytpl;
-			  var $ = layui.jquery;
-			  var laypage = layui.laypage;
-		$.ajax({
-	    	type:"post",
-	    	url:"<%=basePath%>admin/tags",
-	    	data:{pageNumber:page},
-	    	success: function(element){
-	    		if(element.code == 0){
-	    			laytpl($("#tagsTemplate").html()).render(element.data.tagsList,function(html){
-	    				$("#tbTags").html(html);
-	    			});
-	    			  laypage({
-	    	  			    cont: 'pageTag',
-	    	  			    pages: Math.ceil(element.data.pageCount/5), //得到总页数 
-	    	  			    groups: '5',
-	    	  			    curr: page,
-	    	  			    jump: function(obj, first){
-	    	  			    	if(!first){
-	    	  			    		showTags(obj.curr);
-	    	  			    	}
-	    	  			    }
-	    	  			  });
-	    		}else{
-	    			layer.msg("添加失败！"+data.message);
-	    		}
-	    	}
-	    });
-		});
-	}
-	
-	function layerWindows(){
-		layui.use('layer', function(){
-			  var layer = layui.layer;
-			  
-			  layer.open({
-				  type: 1,
-				  area: ['700px', '300px'],
-				  content: $('#collapseOne') //数组第二项即吸附元素选择器或者DOM
-				}); 
-			});   
-	}
-	
-	</script>
-	<script id="tagsTemplate" type="text/template">
-	{{#  layui.each(d.list, function(index, item){ }}
-	<tr class="list-group-item-success">
-   		<td><input type="checkbox" value="" /></td>
-		<td class="text-center">index</td>
-   		<td class="text-center">{{item.name}}</td>
-		<td class="text-center">{{item.cdate}}</td>
-		<td class="text-center">
-			<span class="btn-form-span-1">
-				<a href="javaScript:layerWindows();" class="btn btn-primary"><i class="icon-pencil"></i>修改</a>
-			</span>
-			<span class="btn-form-span-1">
-				<a href="<%=basePath%>admin/tags/delTag/{{item.id}}" class="btn btn-danger ">删除</a>
-			</span>
-		</td>
- 	 </tr>
-	{{# }); }}
-	
-	</script>
-
-
-</body>
+    <script type="text/javascript" src="<%=basePath%>static/js/summernote.js?=<%=js%>"></script>
+    <script>
+    $(document).ready(function() {
+        $('#summernote').summernote({
+        	height: 300,                 // set editor height
+ 			minHeight: null,             // set minimum height of editor
+ 			maxHeight: null,             // set maximum height of editor
+    });
+   });
+  </script>
+  </body>
 </html>

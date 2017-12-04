@@ -69,7 +69,7 @@ String js = (String)this.getServletContext().getAttribute("token.js");
                                 <a class="active-menu" href="<%=basePath%>jsp/admin/main.jsp"><i class="fa fa-edit"></i>新建博文</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>jsp/admin/tag.jsp"><i class="fa fa-edit"></i>标签管理</a>
+                                <a href="<%=basePath%>admin/tags"><i class="fa fa-edit"></i>标签管理</a>
                             </li>
                         </ul>
                     </li>

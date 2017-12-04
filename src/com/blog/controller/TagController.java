@@ -17,7 +17,15 @@ import com.jfinal.plugin.activerecord.Record;
  * @date 2017年4月15日
  */
 public class TagController extends BaseController {
+	
 	public void index() {
+		render("tag.jsp");
+	}
+	
+	/**
+	 * 查询现有标签
+	 */
+	public void findTags() {
 		int pageNumber = 1;
 		if (getPara("pageNumber") != "" && getPara("pageNumber") != null) {
 			pageNumber = Integer.valueOf(getPara("pageNumber"));
@@ -41,8 +49,8 @@ public class TagController extends BaseController {
 		try {
 			Tags tags = getModel(Tags.class, "tags");
 			if (tags.getName() != null) {
-				String id = BlogUtils.signByMD5(tags.getName());
-				if (Tags.dao.findById(id) != null) {
+				String id = BlogUtils.getUUID();
+				if (Tags.getNumberByName(tags.getName()) != 0) {
 					render(GlobalConstants.Code.FAILURE, "该标签已存在！");
 				} else {
 					tags.setCdate(DateUtils.getCurrentDate());
@@ -75,6 +83,24 @@ public class TagController extends BaseController {
 			}
 		} else {
 			render(GlobalConstants.Code.FAILURE, "删除失败,标签ID丢失！");
+		}
+	}
+	
+	public void editTag(){
+		Tags tags = getModel(Tags.class, "tags");
+		if(tags.getId() !=null && tags.getName() !=null){
+			if(Tags.getNumberByName(tags.getName()) !=0){
+				render(GlobalConstants.Code.FAILURE, "该标签名已存在！");
+			}else{
+				System.out.println("tags的id为："+ tags.getId());
+				if(tags.update()){
+					render(GlobalConstants.Code.SUCCESS, "修改成功！");
+				}else{
+					render(GlobalConstants.Code.FAILURE, "修改失败！");
+				}
+			}
+		}else{
+			render(GlobalConstants.Code.FAILURE, "标签信息丢失！");
 		}
 	}
 }

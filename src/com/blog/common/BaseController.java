@@ -2,6 +2,7 @@ package com.blog.common;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.alibaba.druid.util.StringUtils;
 import com.jfinal.core.Controller;
 
 /**
@@ -50,6 +51,16 @@ public class BaseController extends Controller {
 			return this;
 		}
 		return setAttr(GlobalConstants.DATA, data);
+	}
+	
+	/**
+	 * 设置响应数据
+	 */
+	protected Controller setData(String key, Object data) {
+		if (data == null || StringUtils.isEmpty(key)) {
+			return this;
+		}
+		return setAttr(key, data);
 	}
 
 	protected void render() {

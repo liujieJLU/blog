@@ -1,6 +1,7 @@
 package com.blog.common;
 
 import com.blog.controller.BlogController;
+import com.blog.controller.CategoryController;
 import com.blog.controller.TagController;
 import com.blog.controller.UserController;
 import com.blog.model._MappingKit;
@@ -39,9 +40,10 @@ public class BlogConfig extends JFinalConfig {
 	}
 
 	public void configRoute(Routes me) {
-		me.add("/hello", BlogController.class);
 		me.add("/admin/user", UserController.class, "/jsp/admin");
-		me.add("/admin/tags", TagController.class, "/jsp/admin");
+		me.add("/admin/tags", TagController.class, "/WEB-INF/blog");
+		me.add("/admin/category", CategoryController.class, "/WEB-INF/blog");
+		me.add("/user", BlogController.class, "/WEB-INF/blog");
 	}
 
 	/**

@@ -14,8 +14,11 @@ import com.jfinal.plugin.activerecord.Record;
 public class Tags extends BaseTags<Tags> {
 	public static final Tags dao = new Tags();
 
-	/*
-	 * 根据分页查询标签信息
+	/**
+	 * 查询标签并分页
+	 * @param pageNumber
+	 * @param pageSize
+	 * @return
 	 */
 	public static Page<Record> paginate(int pageNumber, int pageSize) {
 		String select = "select * ";
@@ -24,8 +27,9 @@ public class Tags extends BaseTags<Tags> {
 		return tagsPage;
 	}
 
-	/*
+	/**
 	 * 查询标签总数
+	 * @return
 	 */
 	public static int pageNumber() {
 		String sql = "select * from tags";
@@ -33,12 +37,33 @@ public class Tags extends BaseTags<Tags> {
 		return tagsList.size();
 	}
 
-	/*
+	/**
 	 * 根据标签id删除标签
+	 * @param id
+	 * @return
 	 */
 	public static Boolean delTag(String id) {
 		Db.update("delete from tags where id = ?", id);
 		Boolean bool = Tags.dao.deleteById(id);
 		return bool;
+	}
+	
+	/**
+	 * 根据标签名查询该标签的数量
+	 * @param name
+	 * @return
+	 */
+	public static int getNumberByName(String name) {
+		List<Tags> tagsList = Tags.dao.find("select * from tags where name = ?", name);
+		return tagsList.size();
+	}
+	
+	/**
+	 * 返回所有标签
+	 * @return
+	 */
+	public static List<Tags> getAllTage() {
+		List<Tags> tagList = Tags.dao.find("select * from tags");
+		return tagList == null ? null : tagList;
 	}
 }
