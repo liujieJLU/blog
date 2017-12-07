@@ -56,6 +56,44 @@ public class CategoryController extends BaseController {
 	}
 	
 	/**
+	 * 修改标签信息
+	 */
+	public void editCategory(){
+		Category category = getModel(Category.class, "category");
+		if(category.getId() !=null && category.getName() !=null){
+			if(Category.getNumberByName(category.getName()) !=0){
+				render(GlobalConstants.Code.FAILURE, "该标签名已存在！");
+			}else{
+				System.out.println("category的id为："+ category.getId());
+				if(category.update()){
+					render(GlobalConstants.Code.SUCCESS, "修改成功！");
+				}else{
+					render(GlobalConstants.Code.FAILURE, "修改失败！");
+				}
+			}
+		}else{
+			render(GlobalConstants.Code.FAILURE, "标签信息丢失！");
+		}
+	}
+	
+	/*
+	 * 删除标签
+	 */
+	public void delCategory() {
+		String categoryId = getPara();
+		if (categoryId != "" && categoryId != null) {
+			boolean bool = Category.delCategory(categoryId);
+			if (bool) {
+				render(GlobalConstants.Code.FAILURE, "删除失败！");
+			} else {
+				render(GlobalConstants.Code.SUCCESS, "删除成功！");
+			}
+		} else {
+			render(GlobalConstants.Code.FAILURE, "删除失败,标签ID丢失！");
+		}
+	}
+	
+	/**
 	 * 查询现有标签
 	 */
 	public void findCategory() {

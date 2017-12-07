@@ -52,7 +52,7 @@
                         <th class="text-center">操作${category.totalRow}</th>
                       </tr>
                     </thead>
-                    <tbody id="tbTags">
+                    <tbody id="tbcategory">
                     
 			<c:forEach items = "${category.list}" var="list">
 				<tr class="list-group-item-danger">
@@ -65,14 +65,14 @@
 							<a href="javaScript:layerWindows('${list.id}', '${list.name}');" class="btn btn-primary"><i class="icon-pencil"></i>修改</a>
 						</span>
 						<span class="btn-form-span-1">
-							<a href="<%=basePath%>admin/tags/delTag/{{item.id}}" class="btn btn-danger ">删除</a>
+							<a href="<%=basePath%>admin/category/delCategory/${list.id}" class="btn btn-danger ">删除</a>
 						</span>
 					</td>
 				</tr>
 			</c:forEach>        
                     </tbody>
                   </table>
-			<div id="categoryTag"></div>
+			<div id="pageCategory"></div>
                 </div>
                 </div>
             
@@ -98,7 +98,7 @@
 		layui.use(['layer', 'laypage'], function(){
 			var laypage = layui.laypage;
 			laypage({
-			    cont: 'categoryTag',
+			    cont: 'pageCategory',
 			    pages: "${category.totalPage}", //得到总页数 
 			    groups: '5',
 			    curr: page,
@@ -147,17 +147,17 @@
 	    	data:{pageNumber:page},
 	    	success: function(element){
 	    		if(element.code == 0){
-	    			laytpl($("#tagsTemplate").html()).render(element.data.tagsList,function(html){
-	    				$("#tbTags").html(html);
+	    			laytpl($("#categoryTemplate").html()).render(element.data.categoryList,function(html){
+	    				$("#tbcategory").html(html);
 	    			});
 	    			  laypage({
-	    	  			    cont: 'pageTag',
+	    	  			    cont: 'pageCategory',
 	    	  			    pages: Math.ceil(element.data.pageCount/5), //得到总页数 
 	    	  			    groups: '5',
 	    	  			    curr: page,
 	    	  			    jump: function(obj, first){
 	    	  			    	if(!first){
-	    	  			    		showTags(obj.curr);
+	    	  			    		showcategory(obj.curr);
 	    	  			    	}
 	    	  			    }
 	    	  			  });
@@ -169,37 +169,35 @@
 		});
 	}
 	
-	function layerWindows(tagsId, tagsName){
-		console.log("分类：========：" + tagsName);
+	function layerWindows(categoryId, categoryName){
+		console.log("分类：========：" + categoryName);
 		layui.use('layer', function(){
 			  var layer = layui.layer;
 			  
 			  layer.open({
 				  type: 1,
 				  area: ['700px', '300px'],
-				  content: '<div class="alert alert-info text-center"><h4> 输入新的标签名</h4><hr><input  type="hidden" id="tagEditId" value="'+tagsId+'">'+
-				  '<input class="form-control" type="text" id="tagEditName" name="tags.name" value="'+tagsName+'">'+
-				  '<hr><button class="btn btn-info" onclick="editTag()">确定</button></div>'
+				  content: '<div class="alert alert-info text-center"><h4> 输入新的标签名</h4><hr><input  type="hidden" id="categoryEditId" value="'+categoryId+'">'+
+				  '<input class="form-control" type="text" id="categoryEditName" name="category.name" value="'+categoryName+'">'+
+				  '<hr><button class="btn btn-info" onclick="editCategory()">确定</button></div>'
 					  
 				}); 
 			});   
 	}
 	/* 修改标签 */
-	function editTag(){
-	alert("标签Id："+$("#tagEditId").val());
-	alert("标签名："+$("#tagEditName").val());
+	function editCategory(){
 	
 	layui.use(['layer', 'form','laytpl'], function(){
 		  var layer = layui.layer;
 		  var form = layui.form();
 	 $.ajax({
 	    	type:"post",
-	    	url:"<%=basePath%>admin/tags/editTag",
-	    	data:{"tags.id":$("#tagEditId").val(), "tags.name":$("#tagEditName").val()},
+	    	url:"<%=basePath%>admin/category/editCategory",
+	    	data:{"category.id":$("#categoryEditId").val(), "category.name":$("#categoryEditName").val()},
 	    	success: function(data){
 	    		if(data.code == 0){
 	    			layer.msg(data.message);
-	    			setTimeout("window.location.href ='<%=basePath%>jsp/admin/tag.jsp'", 1500);
+	    			setTimeout("window.location.href ='<%=basePath%>admin/category'", 1500);
 	    		}else{
 	    			layer.msg("修改失败！"+data.message);
 	    		}
@@ -217,9 +215,9 @@
                           <h4> 输入新的标签名</h4> 
                           <hr>
                           <input  type="hidden"  value="item.name">
-                          <input class="form-control" type="text" name="tags.name" value="item.name">
+                          <input class="form-control" type="text" name="category.name" value="item.name">
                           <hr>
-                            <button class="btn btn-info" onclick="addTag()">确定</button>
+                            <button class="btn btn-info" onclick="addCategory()">确定</button>
                         </div>
                     </div>
 </html>

@@ -199,10 +199,10 @@
                                             <div  class="float-left-2">
                                             <label>博文类型</label>
                                             <select class="form-control">
-                                                <option>One Vale</option>
-                                                <option>Two Vale</option>
-                                                <option>Three Vale</option>
-                                                <option>Four Vale</option>
+                                            	<option value="">请选择类别</option>
+                                           		<c:forEach items="${categoryList}" var="category" varStatus="status">
+                                            		<option value="${category.id}">${category.name}</option>
+                                          		</c:forEach>
                                             </select>
                                         	</div>
                                         	<div class="float-right-2">

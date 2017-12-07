@@ -38,6 +38,17 @@ public class Category extends BaseCategory<Category> {
 	}
 	
 	/**
+	 * 根据类别id删除类别
+	 * @param id
+	 * @return
+	 */
+	public static Boolean delCategory(String id) {
+		Db.update("delete from category where id = ?", id);
+		Boolean bool = Category.dao.deleteById(id);
+		return bool;
+	}
+	
+	/**
 	 * 查询类别总数
 	 * @return
 	 */
@@ -45,5 +56,14 @@ public class Category extends BaseCategory<Category> {
 		String sql = "select * from category";
 		List<Record> categoryList = Db.find(sql);
 		return categoryList.size();
+	}
+	
+	/**
+	 * 返回所有类别
+	 * @return
+	 */
+	public static List<Category> getAllCategory() {
+		List<Category> categoryList = Category.dao.find("select * from category");
+		return categoryList == null ? null : categoryList;
 	}
 }

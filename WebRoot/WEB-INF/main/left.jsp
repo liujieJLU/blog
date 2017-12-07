@@ -22,7 +22,7 @@
                         <a  href="index.html"><i class="fa fa-dashboard "></i>博客管理<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="<%=basePath%>jsp/admin/main.jsp"><i class="fa fa-edit"></i>新建博文</a>
+                                <a href="<%=basePath%>blog/user/addBlog"><i class="fa fa-edit"></i>新建博文</a>
                             </li>
                             <li>
                                 <a class="active-menu" href="<%=basePath%>admin/tags"><i class="fa fa-edit"></i>标签管理</a>
