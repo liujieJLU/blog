@@ -185,20 +185,20 @@
                            BASIC FORM
                         </div>
                         <div class="panel-body">
-                            <form role="form">
+                            <form role="form" id ="blogForm" action ="<%=basePath%>user/saveBlog" method="post">
                                         <div class="form-group">
                                             <label>博文标题</label>
-                                            <input class="form-control" type="text">
+                                            <input class="form-control" type="text" name ="blog.title">
                                             <p class="help-block">Help text here.</p>
                                         </div>
                                         <div class="form-group">
                                             <label>博文作者</label>
-                                            <input class="form-control" type="text">
+                                            <input class="form-control" type="text" name ="blog.author">
                                             <p class="help-block">Help text here.</p>
                                         </div>
                                             <div  class="float-left-2">
                                             <label>博文类型</label>
-                                            <select class="form-control">
+                                            <select class="form-control" name="blog.categoryId">
                                             	<option value="">请选择类别</option>
                                            		<c:forEach items="${categoryList}" var="category" varStatus="status">
                                             		<option value="${category.id}">${category.name}</option>
@@ -207,7 +207,7 @@
                                         	</div>
                                         	<div class="float-right-2">
                                             <label>博文标签</label>
-                                            <select class="form-control">
+                                            <select class="form-control" name="blog.typeId">
                                             <option value="">请选择标签</option>
                                             <c:forEach items="${tagsList}" var="tags" varStatus="status">
                                             	<option value="${tags.id}">${tags.name}</option>
@@ -216,12 +216,12 @@
                                         </div>
                                         <div class="form-group">
                                             <label>博文摘要</label>
-                                            <textarea class="form-control" rows="4"></textarea>
+                                            <textarea class="form-control" rows="4" name="blog.summary"></textarea>
                                        	</div>
                                        	<div id="summernote" class="form-group">
                                        		<p>Hello Summernote</p>
                                        	</div>
-                                        <button type="submit" class="btn btn-info">Send Message </button>
+                                        <button type="submit" class="btn btn-info"  >Send Message </button>
                                     </form>
                             </div>
                     </div>
@@ -243,6 +243,8 @@
     <script type="text/javascript" src="<%=basePath%>static/js/jquery.metisMenu.js?=<%=js%>"></script>
     <script type="text/javascript" src="<%=basePath%>static/js/custom.js?=<%=js%>"></script>
     <script type="text/javascript" src="<%=basePath%>static/js/summernote.js?=<%=js%>"></script>
+    <script type="text/javascript" src="<%=basePath%>static/js/upload/summernoteupload.js?=<%=js%>"></script>
+    
     <script>
     $(document).ready(function() {
         $('#summernote').summernote({
@@ -251,6 +253,26 @@
  			maxHeight: null,             // set maximum height of editor
     });
    });
+    $('#summernote').summernote({  
+    	height: 300,                 // set editor height
+		minHeight: null,             // set minimum height of editor
+		maxHeight: null,             // set maximum height of editor
+        lang: 'zh-CN',  
+        focus:true,  
+        toolbar: [  
+            ['style', ['bold', 'italic', 'underline', 'clear']],  
+            ['fontsize', ['fontsize']],  
+            ['color', ['color']],  
+            ['para', ['ul', 'ol', 'paragraph']],  
+            ['height', ['height']],  
+            ['insert', ['picture', 'video']]  
+        ],  
+        callbacks: {  
+            onImageUpload: function(files, editor, $editable) {  
+                sendFile(files);  
+            }  
+        }  
+    });
   </script>
   </body>
 </html>
